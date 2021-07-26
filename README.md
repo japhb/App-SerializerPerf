@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/japhb/serializer-perf/workflows/test/badge.svg)](https://github.com/japhb/serializer-perf/actions)
+
 NAME
 ====
 
