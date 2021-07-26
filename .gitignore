@@ -1,2 +1,20 @@
+# Caches
 .precomp/
+node_modules/
+
+# Packages
+/sdist/
 /serializer-perf-*
+
+# Backup files
+*~
+
+# IDE files
+/.idea
+*.iml
+
+# Generated files
+/*.html
+/docs/*.html
+/docs/*/*.html
+/docs/*/*.dot.svg
