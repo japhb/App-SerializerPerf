@@ -5,8 +5,13 @@
   "build-depends": [
   ],
   "depends": [
+    "BSON::Document",
+    "BSON::Simple",
+    "CBOR::Simple",
+    "JSON::Fast",
+    "YAMLish"
   ],
-  "description": "blah blah blah",
+  "description": "Performance tests for data serializer codecs",
   "license": "Artistic-2.0",
   "name": "serializer::perf",
   "perl": "6.d",
