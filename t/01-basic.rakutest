@@ -1,6 +1,0 @@
-use Test;
-use serializer::perf;
-
-pass "replace me";
-
-done-testing;

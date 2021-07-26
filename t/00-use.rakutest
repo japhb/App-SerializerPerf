@@ -1,0 +1,11 @@
+use v6.d;
+use Test;
+
+
+use App::SerializerPerf Empty;
+
+
+pass "all modules loaded successfully";
+
+
+done-testing;
