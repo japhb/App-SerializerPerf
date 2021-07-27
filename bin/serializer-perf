@@ -1,5 +1,8 @@
 #!/usr/bin/env raku
+
 use App::SerializerPerf;
+use JSON::Fast;
+
 
 #| Compare serialization codec performance and fidelity
 multi MAIN(
