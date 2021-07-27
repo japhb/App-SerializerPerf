@@ -4,14 +4,18 @@ unit module App::SerializerPerf:auth<zef:japhb>:api<0>:ver<0.0.1>;
 #       file to work with.  I snapshotted mine from ~/.zef/store/360.zef.pm .
 
 
+# Bidirectional codecs
 use YAMLish;
 use JSON::Fast;
 use CBOR::Simple;
 use BSON::Simple;
 use BSON::Document;
 
+# Parse-only decoders
+use JSON::Hjson;
 
-# my @order  = < JSON::Fast CBOR::Simple BSON::Simple BSON::Document YAMLish .raku/EVAL >;
+
+# my @order  = < JSON::Fast CBOR::Simple BSON::Simple BSON::Document JSON::Hjson YAMLish .raku/EVAL >;
 my @order  = < JSON::Fast CBOR::Simple BSON::Simple >;
 my $length = @order.map(*.chars).max;
 
@@ -122,7 +126,8 @@ sub time-codecs(Str:D $variant, $struct) is export {
     };
 
     my %decoders := {
-        'JSON::Fast'     => { my $j = from-json $json.decode },
+        'JSON::Fast'     => { my $j = from-json  $json.decode },
+        'JSON::Hjson'    => { my $h = from-hjson $json.decode },
         'CBOR::Simple'   => { my $c = cbor-decode $cbor },
         'BSON::Simple'   => { my $b = bson-decode($bson)<b> },
         'BSON::Document' => { my $d = BSON::Document.new($doce)<b> },
@@ -168,8 +173,14 @@ codecs:
  BSON::Simple   | BSON   | Mixed | Fair  | Fair     | Poor
  CBOR::Simple   | CBOR   | BEST  | BEST  | Good     | Poor
  JSON::Fast     | JSON   | Fair  | Good  | Fair     | Good
+ JSON::Hjson    | JSON   | *     | Poor  | Fair     | Good*
  YAMLish        | YAML   | Poor  | Poor  | Fair     | BEST
  .raku/EVAL     | Raku   | Poor  | Poor  | BEST     | Fair
+
+(Note: C<JSON::Hjson> is a decoder I<only>, and has no native encode ability.
+Thus performance and fidelity was tested against inputs in the JSON subset of
+Hjson, though of course the point of Hjson is to allow more human-friendly
+variation in data formatting -- similar to YAML in that respect.)
 
 Because some of the tests are I<very> slow, the default values for C<--runs>
 and C<--count> are 1 and 10 respectively.  If only testing the faster codecs

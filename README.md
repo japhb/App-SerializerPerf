@@ -26,9 +26,11 @@ DESCRIPTION
 <th>Codec</th> <th>Format</th> <th>Size</th> <th>Speed</th> <th>Fidelity</th> <th>Human-Friendly</th>
 </tr></thead>
 <tbody>
-<tr> <td>BSON::Document</td> <td>BSON</td> <td>Mixed</td> <td>Poor</td> <td>Poor</td> <td>Poor</td> </tr> <tr> <td>BSON::Simple</td> <td>BSON</td> <td>Mixed</td> <td>Fair</td> <td>Fair</td> <td>Poor</td> </tr> <tr> <td>CBOR::Simple</td> <td>CBOR</td> <td>BEST</td> <td>BEST</td> <td>Good</td> <td>Poor</td> </tr> <tr> <td>JSON::Fast</td> <td>JSON</td> <td>Fair</td> <td>Good</td> <td>Fair</td> <td>Good</td> </tr> <tr> <td>YAMLish</td> <td>YAML</td> <td>Poor</td> <td>Poor</td> <td>Fair</td> <td>BEST</td> </tr> <tr> <td>.raku/EVAL</td> <td>Raku</td> <td>Poor</td> <td>Poor</td> <td>BEST</td> <td>Fair</td> </tr>
+<tr> <td>BSON::Document</td> <td>BSON</td> <td>Mixed</td> <td>Poor</td> <td>Poor</td> <td>Poor</td> </tr> <tr> <td>BSON::Simple</td> <td>BSON</td> <td>Mixed</td> <td>Fair</td> <td>Fair</td> <td>Poor</td> </tr> <tr> <td>CBOR::Simple</td> <td>CBOR</td> <td>BEST</td> <td>BEST</td> <td>Good</td> <td>Poor</td> </tr> <tr> <td>JSON::Fast</td> <td>JSON</td> <td>Fair</td> <td>Good</td> <td>Fair</td> <td>Good</td> </tr> <tr> <td>JSON::Hjson</td> <td>JSON</td> <td>*</td> <td>Poor</td> <td>Fair</td> <td>Good*</td> </tr> <tr> <td>YAMLish</td> <td>YAML</td> <td>Poor</td> <td>Poor</td> <td>Fair</td> <td>BEST</td> </tr> <tr> <td>.raku/EVAL</td> <td>Raku</td> <td>Poor</td> <td>Poor</td> <td>BEST</td> <td>Fair</td> </tr>
 </tbody>
 </table>
+
+(Note: `JSON::Hjson` is a decoder *only*, and has no native encode ability. Thus performance and fidelity was tested against inputs in the JSON subset of Hjson, though of course the point of Hjson is to allow more human-friendly variation in data formatting -- similar to YAML in that respect.)
 
 Because some of the tests are *very* slow, the default values for `--runs` and `--count` are 1 and 10 respectively. If only testing the faster codecs (those with Speed of Fair or better in the table above), these will be too low; 5 and 100 are more appropriate values in that case.
 

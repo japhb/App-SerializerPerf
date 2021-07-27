@@ -10,6 +10,7 @@
     "BSON::Simple",
     "CBOR::Simple",
     "JSON::Fast",
+    "JSON::Hjson",
     "YAMLish"
   ],
   "description": "Performance tests for data serializer codecs",
