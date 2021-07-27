@@ -23,10 +23,12 @@ sub time-them(%by-codec) {
 
     for ^$runs {
         for @order -> $codec {
-            my &test-code = %by-codec{$codec};
+            next unless my $test-code := %by-codec{$codec};
+
             my $ts = now;
-            test-code() for ^$count;
+            $test-code() for ^$count;
             my $te = now;
+
             %times{$codec}.append($te - $ts);
         }
     }
