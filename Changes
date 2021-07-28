@@ -1,6 +1,6 @@
 Revision history for serializer-perf
 
-0.0.1  *WIP*
+0.0.1  2021-07-21
   - Initial version, with support for:
     * BSON::Document
     * BSON::Simple
