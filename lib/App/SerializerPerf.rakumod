@@ -84,6 +84,25 @@ sub show-sizes(%blobs) {
     }
 }
 
+sub show-reliability(%encoders, %decoders) {
+    say "\nReliability:";
+    for @order -> $codec {
+        my @errors;
+        if %encoders{$codec} -> $encoder {
+            $encoder();
+            CATCH { default { @errors.push: "Encoder failure for $codec:\n{.Str.indent(4)}" } }
+        }
+
+        if %decoders{$codec} -> $decoder {
+            $decoder();
+            CATCH { default { @errors.push: "Decoder failure for $codec:\n{.Str.indent(4)}" } }
+        }
+
+        printf "%-{$length}s  %8s\n", $codec, @errors ?? 'FAIL' !! 'pass';
+        .indent(4).say for @errors;
+    }
+}
+
 sub show-fidelity(%by-codec, $reference) {
     say "\nFidelity:";
 
@@ -142,6 +161,7 @@ sub time-codecs(Str:D $variant, $struct) is export {
     };
 
     show-sizes(%blobs);
+    show-reliability(%encoders, %decoders);
     show-fidelity(%decoders, $struct);
     time-and-show('Encode', %encoders);
     time-and-show('Decode', %decoders);
