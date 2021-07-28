@@ -29,6 +29,8 @@ sub time-them(%by-codec) {
         for @order -> $codec {
             next unless my $test-code := %by-codec{$codec};
 
+            CATCH { default { } }
+
             my $ts = now;
             $test-code() for ^$count;
             my $te = now;
@@ -64,7 +66,11 @@ sub show-sizes(%blobs) {
     say "\nSizes:";
     my $reference;
     for @order -> $codec {
-        next unless my $blob = %blobs{$codec};
+        unless my $blob = %blobs{$codec} {
+            printf "%-{$length}s  %8s\n", $codec, 'NONE';
+            next;
+        }
+
         my $size = $blob.bytes;
 
         if $reference {
@@ -83,7 +89,7 @@ sub show-fidelity(%by-codec, $reference) {
 
     for @order -> $codec {
         next unless my $decoder = %by-codec{$codec};
-        my $decoded = $decoder();
+        my $decoded = try $decoder();
 
         printf "%-{$length}s  %8s\n",
                $codec, $decoded eqv $reference ?? 'pass' !! 'FAIL';
@@ -98,14 +104,14 @@ sub time-codecs(Str:D $variant, $struct) is export {
     my $*BSON_SIMPLE_PLAIN_HASHES = True;
     my $*BSON_SIMPLE_PLAIN_BLOBS  = True;
 
-    my $yaml = save-yaml($struct).encode;
-    my $raku = $struct.raku.encode;
-    my $json = to-json($struct, :!pretty).encode;
-    my $bson = bson-encode { b => $struct };
-    my $cbor = cbor-encode $struct;
+    my $yaml = try save-yaml($struct).encode;
+    my $raku = try $struct.raku.encode;
+    my $json = try to-json($struct, :!pretty).encode;
+    my $bson = try bson-encode { b => $struct };
+    my $cbor = try cbor-encode $struct;
 
-    my $doc  = BSON::Document.new($bson);
-    my $doce = $doc.encode;
+    my $doc  = try BSON::Document.new($bson);
+    my $doce = try $doc.encode;
 
     my %blobs := {
         'JSON::Fast'     => $json,

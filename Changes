@@ -1,5 +1,9 @@
 Revision history for serializer-perf
 
+0.0.2  *WIP*
+  - Gracefully handle crashing codecs
+
+
 0.0.1  2021-07-21
   - Initial version, with support for:
     * BSON::Document
