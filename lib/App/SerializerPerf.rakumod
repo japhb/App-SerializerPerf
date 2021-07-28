@@ -4,20 +4,36 @@ unit module App::SerializerPerf:auth<zef:japhb>:api<0>:ver<0.0.1>;
 #       file to work with.  I snapshotted mine from ~/.zef/store/360.zef.pm .
 
 
-# Bidirectional codecs
-use YAMLish;
-use JSON::Fast;
-use CBOR::Simple;
-use BSON::Simple;
-use BSON::Document;
-
 # Parse-only decoders
 use JSON::Hjson;
 
+# Bidirectional codecs
+use BSON::Document;
+use BSON::Simple;
+use CBOR::Simple;
+use JSON::Fast;
+use YAMLish;
 
-# my @order  = < JSON::Fast CBOR::Simple BSON::Simple BSON::Document JSON::Hjson YAMLish .raku/EVAL >;
+# All used the same exported names
+use Config::TOML           Empty;
+use TOML:auth<zef:tony-o>  Empty;
+use TOML::Thumb            Empty;
+
+# Disambiguate codecs that used the same exported names
+constant &config-toml-encode = Config::TOML::EXPORT::DEFAULT::<&to-toml>;
+constant &config-toml-decode = Config::TOML::EXPORT::DEFAULT::<&from-toml>;
+constant &toml-tony-o-encode = TOML::EXPORT::DEFAULT::<&to-toml>;
+constant &toml-tony-o-decode = TOML::EXPORT::DEFAULT::<&from-toml>;
+constant &toml-thumb-encode  = TOML::Thumb::EXPORT::DEFAULT::<&to-toml>;
+constant &toml-thumb-decode  = TOML::Thumb::EXPORT::DEFAULT::<&from-toml>;
+
+
 my @order  = < JSON::Fast CBOR::Simple BSON::Simple >;
-my $length = @order.map(*.chars).max;
+my @toml   = < TOML(tony-o) TOML::Thumb Config::TOML >;
+my @slow   = < BSON::Document JSON::Hjson .raku/EVAL YAMLish >;
+my $length = (@order, @toml, @slow).flat.map(*.chars).max;
+@order.append(@toml);
+@order.append(@slow);
 
 
 sub time-them(%by-codec) {
@@ -132,11 +148,18 @@ sub time-codecs(Str:D $variant, $struct) is export {
     my $doc  = try BSON::Document.new($bson);
     my $doce = try $doc.encode;
 
+    my $toml1 = try config-toml-encode({ t => $struct }).encode;
+    my $toml2 = try toml-tony-o-encode({ t => $struct }).encode;
+    my $toml3 = try toml-thumb-encode( { t => $struct }).encode;
+
     my %blobs := {
         'JSON::Fast'     => $json,
         'CBOR::Simple'   => $cbor,
         'BSON::Simple'   => $bson,
         'BSON::Document' => $doce,
+        'Config::TOML'   => $toml1,
+        'TOML(tony-o)'   => $toml2,
+        'TOML::Thumb'    => $toml3,
         '.raku/EVAL'     => $raku,
         'YAMLish'        => $yaml,
     };
@@ -146,6 +169,9 @@ sub time-codecs(Str:D $variant, $struct) is export {
         'CBOR::Simple'   => { my $c = cbor-encode $struct },
         'BSON::Simple'   => { my $b = bson-encode { b => $struct } },
         'BSON::Document' => { my $d = $doc.encode },
+        'Config::TOML'   => { my $t = config-toml-encode({ t => $struct }).encode },
+        'TOML(tony-o)'   => { my $t = toml-tony-o-encode({ t => $struct }).encode },
+        'TOML::Thumb'    => { my $t = toml-thumb-encode( { t => $struct }).encode },
         '.raku/EVAL'     => { my $r = $struct.raku.encode },
         'YAMLish'        => { my $y = save-yaml($struct).encode },
     };
@@ -156,6 +182,9 @@ sub time-codecs(Str:D $variant, $struct) is export {
         'CBOR::Simple'   => { my $c = cbor-decode $cbor },
         'BSON::Simple'   => { my $b = bson-decode($bson)<b> },
         'BSON::Document' => { my $d = BSON::Document.new($doce)<b> },
+        'Config::TOML'   => { my $t = config-toml-decode($toml1.decode)<t> },
+        'TOML(tony-o)'   => { my $t = toml-tony-o-decode($toml2.decode)<t> },
+        'TOML::Thumb'    => { my $t = toml-thumb-decode( $toml3.decode)<t> },
         '.raku/EVAL'     => { my $r = EVAL $raku.decode },
         'YAMLish'        => { my $y = load-yaml $yaml.decode },
     };
@@ -200,6 +229,9 @@ codecs:
  CBOR::Simple   | CBOR   | BEST  | BEST  | Good     | Poor
  JSON::Fast     | JSON   | Fair  | Good  | Fair     | Good
  JSON::Hjson    | JSON   | *     | Poor  | Fair     | Good*
+ TOML::Thumb    | TOML   | Poor  | Mixed | Poor     | Good
+ TOML(tony-o)   | TOML   | Poor  | Poor  | Poor     | Good
+ Config::TOML   | TOML   | Poor  | Poor  | Poor     | Good
  YAMLish        | YAML   | Poor  | Poor  | Fair     | BEST
  .raku/EVAL     | Raku   | Poor  | Poor  | BEST     | Fair
 

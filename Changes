@@ -3,6 +3,10 @@ Revision history for serializer-perf
 0.0.2  *WIP*
   - Gracefully handle crashing codecs
   - Show codec reliability results
+  - Support additional codecs:
+    * Config::TOML
+    * TOML:auth<zef:tony-o>
+    * TOML::Thumb
 
 
 0.0.1  2021-07-21

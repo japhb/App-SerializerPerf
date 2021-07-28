@@ -9,8 +9,11 @@
     "BSON::Document",
     "BSON::Simple",
     "CBOR::Simple",
+    "Config::TOML",
     "JSON::Fast",
     "JSON::Hjson",
+    "TOML:auth<zef:tony-o>",
+    "TOML::Thumb",
     "YAMLish"
   ],
   "description": "Performance tests for data serializer codecs",
