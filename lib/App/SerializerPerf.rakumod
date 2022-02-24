@@ -264,9 +264,9 @@ C<MessagePack> is a decoder only as well, with no native encode ability; it was
 tested with data packed by C<Data::MessagePack>.)
 
 Because some of the tests are I<very> slow, the default values for C<--runs>
-and C<--count> are 1 and 10 respectively.  If only testing the faster codecs
+and C<--count> are both set to 1.  If only testing the faster codecs
 (those with Speed of Fair or better in the table above), these will be too low;
-5 and 100 are more appropriate values in that case.
+5 runs and 100 count are more appropriate values in that case.
 
 
 =head1 AUTHOR

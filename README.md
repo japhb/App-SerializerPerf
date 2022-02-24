@@ -32,7 +32,7 @@ DESCRIPTION
 
 (Note: `JSON::Hjson` is a decoder *only*, and has no native encode ability. Thus performance and fidelity was tested against inputs in the JSON subset of Hjson, though of course the point of Hjson is to allow more human-friendly variation in data formatting -- similar to YAML in that respect. Similarly, `MessagePack` is a decoder only as well, with no native encode ability; it was tested with data packed by `Data::MessagePack`.)
 
-Because some of the tests are *very* slow, the default values for `--runs` and `--count` are 1 and 10 respectively. If only testing the faster codecs (those with Speed of Fair or better in the table above), these will be too low; 5 and 100 are more appropriate values in that case.
+Because some of the tests are *very* slow, the default values for `--runs` and `--count` are both set to 1. If only testing the faster codecs (those with Speed of Fair or better in the table above), these will be too low; 5 runs and 100 count are more appropriate values in that case.
 
 AUTHOR
 ======

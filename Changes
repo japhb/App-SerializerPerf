@@ -1,6 +1,8 @@
 Revision history for serializer-perf
 
 {{$NEXT}}
+  - Missed in last release: update README to match change in defaults
+
 
 0.0.3  2022-02-23T20:54:06-08:00
   - Default iteration count to 1 (some codecs are REALLY slow)
