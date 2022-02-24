@@ -10,8 +10,10 @@
     "BSON::Simple",
     "CBOR::Simple",
     "Config::TOML",
+    "Data::MessagePack",
     "JSON::Fast",
     "JSON::Hjson",
+    "MessagePack",
     "TOML:auth<zef:tony-o>",
     "TOML::Thumb",
     "YAMLish"
