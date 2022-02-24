@@ -211,7 +211,7 @@ sub time-codecs(Str:D $variant, $struct,
 
 =head1 NAME
 
-serializer-perf - Performance tests for data serializer codecs
+serializer-perf - Performance tests for Raku data serializer codecs
 
 =head1 SYNOPSIS
 
@@ -228,8 +228,8 @@ serializer-perf [--runs=UInt] [--count=UInt] [--source=Path]
 =head1 DESCRIPTION
 
 C<serializer-perf> is a test suite of performance and correctness (fidelity)
-tests for data serializer codecs.  It is currently able to test the following
-codecs:
+tests for Raku data serializer codecs.  It is currently able to test the
+following codecs:
 
 =table
  Codec          | Format | Size  | Speed | Fidelity | Human-Friendly
@@ -263,7 +263,7 @@ Geoffrey Broadwell <gjb@sonic.net>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2021 Geoffrey Broadwell
+Copyright 2021-2022 Geoffrey Broadwell
 
 This library is free software; you can redistribute it and/or modify it under
 the Artistic License 2.0.

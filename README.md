@@ -3,7 +3,7 @@
 NAME
 ====
 
-serializer-perf - Performance tests for data serializer codecs
+serializer-perf - Performance tests for Raku data serializer codecs
 
 SYNOPSIS
 ========
@@ -19,7 +19,7 @@ serializer-perf [--runs=UInt] [--count=UInt] [--source=Path]
 DESCRIPTION
 ===========
 
-`serializer-perf` is a test suite of performance and correctness (fidelity) tests for data serializer codecs. It is currently able to test the following codecs:
+`serializer-perf` is a test suite of performance and correctness (fidelity) tests for Raku data serializer codecs. It is currently able to test the following codecs:
 
 <table class="pod-table">
 <thead><tr>
@@ -42,7 +42,7 @@ Geoffrey Broadwell <gjb@sonic.net>
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2021 Geoffrey Broadwell
+Copyright 2021-2022 Geoffrey Broadwell
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

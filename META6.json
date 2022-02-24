@@ -16,7 +16,7 @@
     "TOML::Thumb",
     "YAMLish"
   ],
-  "description": "Performance tests for data serializer codecs",
+  "description": "Performance tests for Raku data serializer codecs",
   "license": "Artistic-2.0",
   "name": "App::SerializerPerf",
   "perl": "6.d",
