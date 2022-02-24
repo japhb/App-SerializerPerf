@@ -45,7 +45,9 @@ sub time-them(%by-codec) {
         for @order -> $codec {
             next unless my $test-code := %by-codec{$codec};
 
-            CATCH { default { } }
+            CATCH   { default { } }
+            CONTROL { when CX::Warn { .resume }
+                      default { } }
 
             my $ts = now;
             $test-code() for ^$count;
@@ -106,12 +108,14 @@ sub show-reliability(%encoders, %decoders) {
         my @errors;
         if %encoders{$codec} -> $encoder {
             $encoder();
-            CATCH { default { @errors.push: "Encoder failure for $codec:\n{.Str.indent(4)}" } }
+            CATCH   { default { @errors.push: "Encoder failure for $codec:\n{.Str.indent(4)}" } }
+            CONTROL { default { @errors.push: "Encoder warning for $codec:\n{.Str.indent(4)}"; .resume } }
         }
 
         if %decoders{$codec} -> $decoder {
             $decoder();
-            CATCH { default { @errors.push: "Decoder failure for $codec:\n{.Str.indent(4)}" } }
+            CATCH   { default { @errors.push: "Decoder failure for $codec:\n{.Str.indent(4)}" } }
+            CONTROL { default { @errors.push: "Decoder warning for $codec:\n{.Str.indent(4)}"; .resume } }
         }
 
         printf "%-{$length}s  %8s\n", $codec, @errors ?? 'FAIL' !! 'pass';
@@ -124,7 +128,7 @@ sub show-fidelity(%by-codec, $reference) {
 
     for @order -> $codec {
         next unless my $decoder = %by-codec{$codec};
-        my $decoded = try $decoder();
+        my $decoded = try quietly $decoder();
 
         printf "%-{$length}s  %8s\n",
                $codec, $decoded eqv $reference ?? 'pass' !! 'FAIL';
