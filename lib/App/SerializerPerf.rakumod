@@ -136,7 +136,13 @@ sub show-fidelity(%by-codec, $reference) {
 }
 
 
-sub time-codecs(Str:D $variant, $struct) is export {
+sub time-codecs(Str:D $variant, $struct,
+                Bool:D :$size        = True,
+                Bool:D :$reliability = True,
+                Bool:D :$fidelity    = True,
+                Bool:D :$encode      = True,
+                Bool:D :$decode      = True,
+               ) is export {
     say "\n====> $variant <====";
 
     use MONKEY-SEE-NO-EVAL;
@@ -193,11 +199,11 @@ sub time-codecs(Str:D $variant, $struct) is export {
         'YAMLish'        => { my $y = load-yaml $yaml.decode },
     };
 
-    show-sizes(%blobs);
-    show-reliability(%encoders, %decoders);
-    show-fidelity(%decoders, $struct);
-    time-and-show('Encode', %encoders);
-    time-and-show('Decode', %decoders);
+    show-sizes(%blobs)                     if $size;
+    show-reliability(%encoders, %decoders) if $reliability;
+    show-fidelity(%decoders, $struct)      if $fidelity;
+    time-and-show('Encode', %encoders)     if $encode;
+    time-and-show('Decode', %decoders)     if $decode;
 }
 
 
