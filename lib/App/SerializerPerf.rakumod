@@ -241,23 +241,27 @@ tests for Raku data serializer codecs.  It is currently able to test the
 following codecs:
 
 =table
- Codec          | Format | Size  | Speed | Fidelity | Human-Friendly
- ===================================================================
- BSON::Document | BSON   | Mixed | Poor  | Poor     | Poor
- BSON::Simple   | BSON   | Mixed | Fair  | Fair     | Poor
- CBOR::Simple   | CBOR   | BEST  | BEST  | Good     | Poor
- JSON::Fast     | JSON   | Fair  | Good  | Fair     | Good
- JSON::Hjson    | JSON   | *     | Poor  | Fair     | Good*
- TOML::Thumb    | TOML   | Poor  | Mixed | Poor     | Good
- TOML(tony-o)   | TOML   | Poor  | Poor  | Poor     | Good
- Config::TOML   | TOML   | Poor  | Poor  | Poor     | Good
- YAMLish        | YAML   | Poor  | Poor  | Fair     | BEST
- .raku/EVAL     | Raku   | Poor  | Poor  | BEST     | Fair
+ Codec             | Format      | Size  | Speed | Fidelity | Human-Friendly
+ ===========================================================================
+ BSON::Document    | BSON        | Mixed | Poor  | Poor     | Poor
+ BSON::Simple      | BSON        | Mixed | Fair  | Fair     | Poor
+ CBOR::Simple      | CBOR        | BEST  | BEST  | Good     | Poor
+ JSON::Fast        | JSON        | Fair  | Good  | Fair     | Good
+ JSON::Hjson       | JSON        | *     | Poor  | Fair     | Good*
+ Data::MessagePack | MessagePack | Good  | Mixed | Fair     | Poor
+ MessagePack       | MessagePack | *     | Mixed | Poor     | Poor*
+ TOML::Thumb       | TOML        | Poor  | Mixed | Poor     | Good
+ TOML(tony-o)      | TOML        | Poor  | Poor  | Poor     | Good
+ Config::TOML      | TOML        | Poor  | Poor  | Poor     | Good
+ YAMLish           | YAML        | Poor  | Poor  | Fair     | BEST
+ .raku/EVAL        | Raku        | Poor  | Poor  | BEST     | Fair
 
 (Note: C<JSON::Hjson> is a decoder I<only>, and has no native encode ability.
 Thus performance and fidelity was tested against inputs in the JSON subset of
 Hjson, though of course the point of Hjson is to allow more human-friendly
-variation in data formatting -- similar to YAML in that respect.)
+variation in data formatting -- similar to YAML in that respect.  Similarly,
+C<MessagePack> is a decoder only as well, with no native encode ability; it was
+tested with data packed by C<Data::MessagePack>.)
 
 Because some of the tests are I<very> slow, the default values for C<--runs>
 and C<--count> are 1 and 10 respectively.  If only testing the faster codecs
