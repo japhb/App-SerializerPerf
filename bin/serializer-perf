@@ -7,10 +7,10 @@ use JSON::Fast;
 #| Compare serialization codec performance and fidelity
 multi MAIN(
     UInt:D :$runs   = 1,    #= Runs per test (for stable results)
-    UInt:D :$count  = 10,   #= Encodes/decodes per run (for sufficient duration)
+    UInt:D :$count  = 1,    #= Encodes/decodes per run (for sufficient duration)
     IO()   :$source = 'fez-test.json'  #= Test file containing JSON data
 ) is export {
-    say "Testing $runs run{$runs == 1 ?? '' !! 's'} of $count iteration{$count == 1 ?? '' !! 's'} each";
+    say "Testing $runs run{$runs == 1 ?? '' !! 's'} of $count iteration{$count == 1 ?? '' !! 's'}{ ' each' if $runs > 1 }";
 
     my $*COUNT = $count;
     my $*RUNS  = $runs;
