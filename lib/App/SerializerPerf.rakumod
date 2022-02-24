@@ -36,6 +36,7 @@ my @toml   = < TOML::Thumb TOML(tony-o) Config::TOML >;
 my @misc   = < JSON::Hjson BSON::Document .raku/EVAL YAMLish >;
 my @order  = (@fast, @mpack, @toml, @misc).flat;
 my $length = @order.map(*.chars).max;
+my %enabled is Set = @order;
 
 
 sub time-them(%by-codec) {
@@ -151,20 +152,20 @@ sub time-codecs(Str:D $variant, $struct,
     my $*BSON_SIMPLE_PLAIN_HASHES = True;
     my $*BSON_SIMPLE_PLAIN_BLOBS  = True;
 
-    my $yaml = try save-yaml($struct).encode;
-    my $raku = try $struct.raku.encode;
-    my $json = try to-json($struct, :!pretty).encode;
-    my $bson = try bson-encode { b => $struct };
-    my $cbor = try cbor-encode $struct;
+    my $yaml  = try quietly save-yaml($struct).encode         if %enabled<YAMLish>;
+    my $raku  = try quietly $struct.raku.encode               if %enabled<.raku/EVAL>;
+    my $json  = try quietly to-json($struct, :!pretty).encode if %enabled<JSON::Fast>;
+    my $bson  = try quietly bson-encode { b => $struct }      if %enabled<BSON::Simple>;
+    my $cbor  = try quietly cbor-encode $struct               if %enabled<CBOR::Simple>;
 
-    my $doc  = try BSON::Document.new($bson);
-    my $doce = try $doc.encode;
+    my $doc   = try quietly BSON::Document.new($bson)         if %enabled<BSON::Document>;
+    my $doce  = try quietly $doc.encode                       if %enabled<BSON::Document>;
 
-    my $mpack = try Data::MessagePack::pack($struct);
+    my $mpack = try quietly Data::MessagePack::pack($struct)  if %enabled<Data::MessagePack>;
 
-    my $toml1 = try config-toml-encode({ t => $struct }).encode;
-    my $toml2 = try toml-tony-o-encode({ t => $struct }).encode;
-    my $toml3 = try toml-thumb-encode( { t => $struct }).encode;
+    my $toml1 = try quietly config-toml-encode({ t => $struct }).encode if %enabled<Config::TOML>;
+    my $toml2 = try quietly toml-tony-o-encode({ t => $struct }).encode if %enabled<TOML(tony-o)>;
+    my $toml3 = try quietly toml-thumb-encode( { t => $struct }).encode if %enabled<TOML::Thumb>;
 
     my %blobs := {
         'JSON::Fast'        => $json,
