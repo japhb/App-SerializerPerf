@@ -1,5 +1,18 @@
 Revision history for serializer-perf
 
+{{$NEXT}}
+
+0.0.3  2022-02-23T20:54:06-08:00
+  - Default iteration count to 1 (some codecs are REALLY slow)
+  - Quiet and capture codec warnings, reporting them in reliability section
+  - Minor wording tweaks in docs and messages
+  - Allow codecs and test sections to be turned off in base API
+    * This is NOT YET exposed in CLI options
+  - Support additional codecs:
+    * Data::MessagePack
+    * MessagePack
+
+
 0.0.2  2021-07-21
   - Gracefully handle crashing codecs
   - Show codec reliability results
