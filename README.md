@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/japhb/serializer-perf/workflows/test/badge.svg)](https://github.com/japhb/serializer-perf/actions)
+[![Actions Status](https://github.com/japhb/App-SerializerPerf/workflows/test/badge.svg)](https://github.com/japhb/App-SerializerPerf/actions)
 
 NAME
 ====
@@ -9,11 +9,23 @@ SYNOPSIS
 ========
 
 ```shell
-serializer-perf [--runs=UInt] [--count=UInt] [--source=Path]
+# SETUP METHOD 1: Installing into Raku module repository
+zef update
+zef install App::SerializerPerf
+serializer-perf --source=$HOME/.zef/store/360.zef.pm
 
- --runs=<UInt>    Runs per test (for stable results)
- --count=<UInt>   Encodes/decodes per run (for sufficient duration)
- --source=<Path>  Test file containing JSON data
+# SETUP METHOD 2: Running from a git clone, rather than installing
+git clone git@github.com:japhb/App-SerializerPerf.git
+cd App-SerializerPerf
+zef update
+zef install --deps-only .
+raku -I. bin/serializer-perf --source=$HOME/.zef/store/360.zef.pm
+
+# OPTIONS:
+
+ --runs=<UInt>    Runs per test (for stable results) [default: 1]
+ --count=<UInt>   Encodes/decodes per run (for sufficient duration) [default: 1]
+ --source=<Path>  Test file containing JSON data [default: fez-test.json]
 ```
 
 DESCRIPTION
@@ -42,7 +54,7 @@ Geoffrey Broadwell <gjb@sonic.net>
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2021-2022 Geoffrey Broadwell
+Copyright 2021-2023 Geoffrey Broadwell
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
