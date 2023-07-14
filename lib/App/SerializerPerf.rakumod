@@ -1,4 +1,4 @@
-unit module App::SerializerPerf:auth<zef:japhb>:api<0>:ver<0.0.4>;
+unit module App::SerializerPerf:auth<zef:japhb>:api<0>:ver<0.0.5>;
 
 # NOTE: To test a structure pulled from a JSON file, you'll need a JSON test
 #       file to work with.  I snapshotted mine from ~/.zef/store/360.zef.pm .

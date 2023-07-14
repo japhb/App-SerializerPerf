@@ -1,6 +1,8 @@
 Revision history for serializer-perf
 
 {{$NEXT}}
+
+0.0.5  2023-07-14T16:30:17-07:00
   - Explain different setup options in README, as requested by tbrowder++
   - Fix deprecation warning in GitHub workflow
 
